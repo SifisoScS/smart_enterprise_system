@@ -1,0 +1,54 @@
+@page "/system-info"
+@using MudBlazor
+
+<PageTitle>System Information</PageTitle>
+
+<MudContainer>
+    <MudText Typo="Typo.h4" Color="Color.Primary" Class="mb-4">
+        System Information
+    </MudText>
+
+    <MudGrid>
+        <MudItem xs="12" md="6">
+            <MudCard>
+                <MudCardContent>
+                    <MudText Typo="Typo.h6" Class="mb-3">Frontend Stack</MudText>
+                    <MudList>
+                        <MudListItem Text="Framework" SecondaryText="Blazor WebAssembly" />
+                        <MudListItem Text="UI Library" SecondaryText="MudBlazor" />
+                        <MudListItem Text=".NET Version" SecondaryText="8.0" />
+                    </MudList>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12" md="6">
+            <MudCard>
+                <MudCardContent>
+                    <MudText Typo="Typo.h6" Class="mb-3">Backend Stack</MudText>
+                    <MudList>
+                        <MudListItem Text="Framework" SecondaryText="Python Flask" />
+                        <MudListItem Text="Database" SecondaryText="SQLite" />
+                        <MudListItem Text="API" SecondaryText="RESTful" />
+                    </MudList>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+
+    <MudGrid Class="mt-4">
+        <MudItem xs="12">
+            <MudCard>
+                <MudCardContent>
+                    <MudText Typo="Typo.h6" Class="mb-3">Development URLs</MudText>
+                    <MudList>
+                        <MudListItem Text="Frontend Application" SecondaryText="http://localhost:5000" />
+                        <MudListItem Text="Backend API" SecondaryText="http://localhost:5001" />
+                        <MudListItem Text="API Health Check" SecondaryText="http://localhost:5001/api/health" />
+                        <MudListItem Text="API Documentation" SecondaryText="http://localhost:5001/api/docs" />
+                    </MudList>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

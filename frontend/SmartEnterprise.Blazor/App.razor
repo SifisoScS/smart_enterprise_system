@@ -1,5 +1,20 @@
-<!-- App.razor - Smart Enterprise Management System -->
-<!-- Auto-generated placeholder file -->
-
-<h3>App.razor</h3>
-<p>Component placeholder - to be implemented</p>
+<Router AppAssembly="@typeof(App).Assembly">
+    <Found Context="routeData">
+        <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <PageTitle>Not found</PageTitle>
+        <LayoutView Layout="@typeof(MainLayout)">
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 text-center">
+                        <h1 class="text-danger">404</h1>
+                        <p class="lead">Sorry, this page doesn't exist.</p>
+                        <a href="/" class="btn btn-primary">Return Home</a>
+                    </div>
+                </div>
+            </div>
+        </LayoutView>
+    </NotFound>
+</Router>
