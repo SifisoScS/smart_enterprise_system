@@ -1,55 +1,137 @@
-@inherits LayoutViewComponent
-@inject NavigationManager NavigationManager
+/* MainLayout.razor specific styles */
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    min-height: 100vh;
+}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Smart Enterprise Management System</title>
-    <base href="/" />
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
-    <link href="css/app.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
-    <div class="page">
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h5>Smart Enterprise</h5>
-            </div>
-            <nav class="sidebar-nav">
-                <a href="/" class="nav-link @(GetNavLinkClass("/"))">
-                    <i class="fas fa-home"></i> Dashboard
-                </a>
-                <a href="/health" class="nav-link @(GetNavLinkClass("/health"))">
-                    <i class="fas fa-heart-pulse"></i> API Health
-                </a>
-                <a href="/system-info" class="nav-link @(GetNavLinkClass("/system-info"))">
-                    <i class="fas fa-info-circle"></i> System Info
-                </a>
-            </nav>
-        </div>
+.sidebar {
+    background: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+    width: 250px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
 
-        <main class="main">
-            <div class="top-row px-4">
-                <a href="https://docs.microsoft.com/aspnet/" target="_blank" class="btn btn-outline-primary btn-sm">About</a>
-            </div>
+.sidebar-header {
+    padding: 1.5rem 1rem;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
 
-            <article class="content px-4">
-                @Body
-            </article>
-        </main>
-    </div>
+.sidebar-header h5 {
+    color: white;
+    margin: 0;
+    font-weight: 600;
+}
 
-    <script src="_framework/blazor.webassembly.js"></script>
-</body>
-</html>
+.sidebar-nav {
+    padding: 1rem 0;
+}
 
-@code {
-    private string GetNavLinkClass(string path)
-    {
-        var currentPath = NavigationManager.Uri.Replace(NavigationManager.BaseUri, "/");
-        return currentPath == path ? "active" : "";
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+}
+
+.nav-link:hover {
+    color: white;
+    background: rgba(255,255,255,0.1);
+    text-decoration: none;
+}
+
+.nav-link.active {
+    color: white;
+    background: rgba(255,255,255,0.2);
+    border-right: 3px solid #007bff;
+}
+
+.nav-link i {
+    margin-right: 0.75rem;
+    width: 20px;
+    text-align: center;
+}
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.top-row {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+    padding: 0 1rem;
+}
+
+.content {
+    padding-top: 1.1rem;
+    flex: 1;
+    padding: 1rem;
+}
+
+/* Responsive design for mobile */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 70px;
+    }
+    
+    .sidebar-header h5,
+    .nav-link span {
+        display: none;
+    }
+    
+    .nav-link i {
+        margin-right: 0;
+        font-size: 1.2rem;
+    }
+    
+    .content {
+        padding: 0.5rem;
+    }
+}
+
+/* Ensure the layout works in different screen sizes */
+@media (max-width: 640.98px) {
+    .page {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    
+    .main {
+        width: 100%;
+    }
+}
+
+/* Dark mode support (optional) */
+@media (prefers-color-scheme: dark) {
+    .main {
+        background: #1a1a1a;
+        color: #ffffff;
+    }
+    
+    .top-row {
+        background-color: #2d2d2d;
+        border-bottom-color: #404040;
     }
 }

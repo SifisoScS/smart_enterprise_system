@@ -148,12 +148,17 @@
             backendStatus = isHealthy ? "Healthy" : "Unhealthy";
             Logger.LogInformation($"Backend health check completed: {backendStatus}");
         }
-        catch (Exception ex)
+        catch (HttpRequestException ex)
         {
-            Logger.LogError(ex, "Backend health check failed");
+            Logger.LogError(ex, "Backend health check failed with HTTP error");
             backendStatus = "Offline";
         }
-        
-        StateHasChanged();
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Backend health check failed with unexpected error");
+            backendStatus = "Error";
+        }
+    
+            StateHasChanged();
     }
 }

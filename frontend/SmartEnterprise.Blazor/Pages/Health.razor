@@ -1,8 +1,10 @@
 @page "/health"
+@using Microsoft.Extensions.Logging
 @using MudBlazor
 @using Microsoft.AspNetCore.Components.Web
 @using SmartEnterprise.Blazor.Services
 @inject ApiService ApiService
+@inject ILogger<Health> Logger
 
 <PageTitle>System Health</PageTitle>
 
@@ -47,8 +49,22 @@
 
     protected override async Task OnInitializedAsync()
     {
-        healthData = await ApiService.GetAsync<HealthResponse>("health");
-        await base.OnInitializedAsync();
+        try
+        {
+            healthData = await ApiService.GetAsync<HealthResponse>("health");
+        }
+            catch (HttpRequestException ex)
+        {
+            // Handle API connection errors
+            Logger.LogError(ex, "Failed to fetch health data");
+            // You could set an error state here
+        }
+            catch (Exception ex)
+        {
+            Logger.LogError(ex, "Unexpected error fetching health data");
+        }
+    
+            await base.OnInitializedAsync();
     }
 
     public class HealthResponse

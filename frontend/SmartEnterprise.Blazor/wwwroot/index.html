@@ -6,14 +6,36 @@
     <title>Smart Enterprise Management System</title>
     <base href="/" />
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link href="css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/app.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
     <div id="app">Loading...</div>
+
     <div id="blazor-error-ui">
         An unhandled error has occurred.
         <a href="" class="reload">Reload</a>
         <a class="dismiss">🗙</a>
     </div>
+
     <script src="_framework/blazor.webassembly.js"></script>
+    
+    <script>
+        // Blazor error UI handling
+        window.addEventListener('DOMContentLoaded', () => {
+            const errorUi = document.getElementById('blazor-error-ui');
+            const reloadButton = errorUi.querySelector('.reload');
+            const dismissButton = errorUi.querySelector('.dismiss');
+            
+            reloadButton.addEventListener('click', () => {
+                location.reload();
+            });
+            
+            dismissButton.addEventListener('click', () => {
+                errorUi.style.display = 'none';
+            });
+        });
+    </script>
 </body>
 </html>

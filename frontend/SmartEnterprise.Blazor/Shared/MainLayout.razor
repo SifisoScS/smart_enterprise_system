@@ -1,55 +1,43 @@
+@using Microsoft.AspNetCore.Components
 @inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Smart Enterprise Management System</title>
-    <base href="/" />
-    <link href="css/bootstrap.min.css" rel="stylesheet" />
-    <link href="css/app.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
-    <div class="page">
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <h5>Smart Enterprise</h5>
-            </div>
-            <nav class="sidebar-nav">
-                <a href="/" class="nav-link @GetNavLinkClass("/")">
-                    <i class="fas fa-home"></i> Dashboard
-                </a>
-                <a href="/health" class="nav-link @GetNavLinkClass("/health")">
-                    <i class="fas fa-heart-pulse"></i> API Health
-                </a>
-                <a href="/system-info" class="nav-link @GetNavLinkClass("/system-info")">
-                    <i class="fas fa-info-circle"></i> System Info
-                </a>
-            </nav>
+<div class="page">
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h5>Smart Enterprise</h5>
         </div>
-
-        <main class="main">
-            <div class="top-row px-4">
-                <a href="https://docs.microsoft.com/aspnet/" target="_blank" class="btn btn-outline-primary btn-sm">About</a>
-            </div>
-
-            <article class="content px-4">
-                @Body
-            </article>
-        </main>
+        <nav class="sidebar-nav">
+            <a href="/" class="nav-link @GetNavLinkClass("/")">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="/health" class="nav-link @GetNavLinkClass("/health")">
+                <i class="fas fa-heart-pulse"></i> API Health
+            </a>
+            <a href="/system-info" class="nav-link @GetNavLinkClass("/system-info")">
+                <i class="fas fa-info-circle"></i> System Info
+            </a>
+        </nav>
     </div>
 
-    <script src="_framework/blazor.webassembly.js"></script>
-</body>
-</html>
+    <main class="main">
+        <div class="top-row px-4">
+            <a href="https://docs.microsoft.com/aspnet/" target="_blank" class="btn btn-outline-primary btn-sm">About</a>
+        </div>
+
+        <article class="content px-4">
+            @Body
+        </article>
+    </main>
+</div>
 
 @code {
     private string GetNavLinkClass(string path)
     {
-        var currentPath = NavigationManager?.Uri?.Replace(NavigationManager.BaseUri, "/") ?? "/";
-        return currentPath == path ? "active" : "";
+        var currentUri = new Uri(NavigationManager.Uri);
+        var currentPath = currentUri.AbsolutePath.TrimEnd('/');
+        var targetPath = path.TrimEnd('/');
+        
+        return currentPath == targetPath ? "active" : "";
     }
 }

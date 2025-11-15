@@ -27,13 +27,13 @@ public class ApiService
             else
             {
                 _logger.LogWarning($"API call failed with status: {response.StatusCode}");
-                return default;
+                throw new HttpRequestException($"API returned {response.StatusCode} for {endpoint}");
             }
         }
-        catch (Exception ex)
+        catch (Exception ex) when (ex is not HttpRequestException)
         {
             _logger.LogError(ex, $"API Error calling {endpoint}: {ex.Message}");
-            return default;
+            throw new HttpRequestException($"Failed to call API endpoint: {endpoint}", ex);
         }
     }
     
