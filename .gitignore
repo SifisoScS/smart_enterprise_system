@@ -657,3 +657,23 @@ docker-compose.override.yml
 *.save
 
 # === End of .gitignore ===
+
+# === Backend Specific ===
+backend/.env
+backend/__pycache__/
+backend/*.pyc
+backend/*.pyo
+backend/*.pyd
+backend/.Python
+backend/venv/
+
+# === Database Files ===
+database/*.db
+database/*.sqlite
+database/*.sqlite3
+database/*.db-journal
+
+# === Development Databases ===
+*.db
+*.sqlite
+*.sqlite3

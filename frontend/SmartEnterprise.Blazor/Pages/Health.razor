@@ -1,0 +1,61 @@
+@page "/health"
+@using MudBlazor
+@using Microsoft.AspNetCore.Components.Web
+@using SmartEnterprise.Blazor.Services
+@inject ApiService ApiService
+
+<PageTitle>System Health</PageTitle>
+
+<MudContainer>
+    <MudText Typo="Typo.h4" Color="Color.Primary" Class="mb-4">
+        System Health Status
+    </MudText>
+
+    @if (healthData == null)
+    {
+        <MudCard>
+            <MudCardContent Class="text-center">
+                <MudProgressCircular Indeterminate="true" />
+                <MudText>Checking system health...</MudText>
+            </MudCardContent>
+        </MudCard>
+    }
+    else
+    {
+        <MudGrid>
+            <MudItem xs="12" md="6">
+                <MudCard>
+                    <MudCardContent>
+                        <MudText Typo="Typo.h6" Class="mb-3">Backend API</MudText>
+                        <MudChip Color="Color.Success" Variant="Variant.Filled" Icon="@Icons.Material.Filled.CheckCircle">
+                            @healthData.Status
+                        </MudChip>
+                        <MudList Class="mt-3">
+                            <MudListItem Text="Service" SecondaryText="@healthData.Service" />
+                            <MudListItem Text="Version" SecondaryText="@healthData.Version" />
+                            <MudListItem Text="Environment" SecondaryText="@healthData.Environment" />
+                        </MudList>
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        </MudGrid>
+    }
+</MudContainer>
+
+@code {
+    private HealthResponse? healthData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        healthData = await ApiService.GetAsync<HealthResponse>("health");
+        await base.OnInitializedAsync();
+    }
+
+    public class HealthResponse
+    {
+        public string Status { get; set; } = string.Empty;
+        public string Service { get; set; } = string.Empty;
+        public string Version { get; set; } = string.Empty;
+        public string Environment { get; set; } = string.Empty;
+    }
+}

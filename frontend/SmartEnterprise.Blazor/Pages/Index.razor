@@ -1,5 +1,159 @@
-<!-- Index.razor - Smart Enterprise Management System -->
-<!-- Auto-generated placeholder file -->
+@page "/"
+@inject ApiService ApiService
+@inject ILogger<Index> Logger
 
-<h3>Index.razor</h3>
-<p>Component placeholder - to be implemented</p>
+<PageTitle>Smart Enterprise System</PageTitle>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="jumbotron bg-primary text-white rounded p-4 mb-4">
+                <h1 class="display-4">🚀 Smart Enterprise Management System</h1>
+                <p class="lead">Foundation Phase - Backend Connected</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="fas fa-server me-2"></i>Backend Status</h5>
+                </div>
+                <div class="card-body text-center">
+                    @if (backendStatus == null)
+                    {
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-2">Checking backend connection...</p>
+                    }
+                    else if (backendStatus == "Healthy")
+                    {
+                        <div class="alert alert-success">
+                            <i class="fas fa-check-circle me-2"></i>
+                            <strong>Backend Connected</strong>
+                            <p class="mb-0 mt-2">API is responding correctly</p>
+                        </div>
+                    }
+                    else if (backendStatus == "Unhealthy")
+                    {
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Backend Unhealthy</strong>
+                            <p class="mb-0 mt-2">API responded with error</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fas fa-times-circle me-2"></i>
+                            <strong>Backend Offline</strong>
+                            <p class="mb-0 mt-2">Cannot connect to backend API</p>
+                            <small class="mt-2 d-block">Make sure the Flask backend is running on http://localhost:5001</small>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>System Information</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Frontend
+                            <span class="badge bg-primary">Blazor WebAssembly</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Backend
+                            <span class="badge bg-secondary">Python Flask API</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Database
+                            <span class="badge bg-success">SQLite</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            Environment
+                            <span class="badge bg-warning text-dark">Development</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0"><i class="fas fa-rocket me-2"></i>Quick Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-6 col-md-3 mb-3">
+                            <a href="http://localhost:5001/api/health" target="_blank" class="btn btn-success w-100">
+                                <i class="fas fa-heart-pulse me-2"></i>API Health
+                            </a>
+                        </div>
+                        <div class="col-sm-6 col-md-3 mb-3">
+                            <a href="http://localhost:5001/api/docs" target="_blank" class="btn btn-info w-100">
+                                <i class="fas fa-book me-2"></i>API Docs
+                            </a>
+                        </div>
+                        <div class="col-sm-6 col-md-3 mb-3">
+                            <a href="/system-info" class="btn btn-warning w-100">
+                                <i class="fas fa-cogs me-2"></i>System Info
+                            </a>
+                        </div>
+                        <div class="col-sm-6 col-md-3 mb-3">
+                            <a href="/health" class="btn btn-primary w-100">
+                                <i class="fas fa-chart-line me-2"></i>Health Check
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string? backendStatus;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            Logger.LogInformation("Initializing Index page and checking backend health");
+            await CheckBackendHealth();
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Error during Index page initialization");
+            backendStatus = "Error";
+        }
+        await base.OnInitializedAsync();
+    }
+
+    private async Task CheckBackendHealth()
+    {
+        try
+        {
+            Logger.LogInformation("Starting backend health check");
+            var isHealthy = await ApiService.HealthCheckAsync();
+            backendStatus = isHealthy ? "Healthy" : "Unhealthy";
+            Logger.LogInformation($"Backend health check completed: {backendStatus}");
+        }
+        catch (Exception ex)
+        {
+            Logger.LogError(ex, "Backend health check failed");
+            backendStatus = "Offline";
+        }
+        
+        StateHasChanged();
+    }
+}

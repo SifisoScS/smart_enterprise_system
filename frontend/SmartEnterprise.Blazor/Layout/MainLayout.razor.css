@@ -1,0 +1,10 @@
+/* Main layout styles */
+#app {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.mud-main-content {
+    background: rgba(255, 255, 255, 0.95);
+    min-height: calc(100vh - 64px);
+}
