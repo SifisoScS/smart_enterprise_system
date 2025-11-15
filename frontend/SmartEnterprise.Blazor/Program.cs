@@ -7,10 +7,11 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 builder.RootComponents.Add<App>("#app");
 builder.RootComponents.Add<HeadOutlet>("head::after");
 
-// Configure HTTP client for backend API
+// Configure HTTP client for backend API with better error handling
 builder.Services.AddScoped(sp => new HttpClient 
 { 
-    BaseAddress = new Uri("http://localhost:5001/api/") 
+    BaseAddress = new Uri("http://localhost:5001/api/"),
+    Timeout = TimeSpan.FromSeconds(30)
 });
 
 // Register application services
@@ -20,4 +21,13 @@ builder.Services.AddScoped<AuthService>();
 // Add logging
 builder.Logging.SetMinimumLevel(LogLevel.Debug);
 
-await builder.Build().RunAsync();
+try
+{
+    await builder.Build().RunAsync();
+}
+catch (Exception ex)
+{
+    // This will catch any unhandled exceptions during startup
+    Console.WriteLine($"Application failed to start: {ex}");
+    throw;
+}
